@@ -1,0 +1,428 @@
+<fix major='4' type='FIX' servicepack='0' minor='2'>
+ <header>
+  <field name='BeginString' required='Y' />
+  <field name='BodyLength' required='Y' />
+  <field name='MsgType' required='Y' />
+  <field name='SenderCompID' required='Y' />
+  <field name='SenderSubID' required='N' />
+  <field name='TargetCompID' required='Y' />
+  <field name='TargetSubID' required='N' />
+  <field name='MsgSeqNum' required='Y' />
+  <field name='PossDupFlag' required='N' />
+  <field name='PossResend' required='N' />
+  <field name='SendingTime' required='Y' />
+  <field name='OrigSendingTime' required='N' />
+ </header>
+ <messages>
+  <message name='Logon' msgcat='admin' msgtype='A'>
+   <field name='EncryptMethod' required='Y' />
+   <field name='HeartBtInt' required='Y' />
+   <field name='ResetSeqNumFlag' required='N' />
+  </message>
+  <message name='Heartbeat' msgcat='admin' msgtype='0'>
+   <field name='TestReqID' required='N' />
+  </message>
+  <message name='TestRequest' msgcat='admin' msgtype='1'>
+   <field name='TestReqID' required='Y' />
+  </message>
+  <message name='ResendRequest' msgcat='admin' msgtype='2'>
+   <field name='BeginSeqNo' required='Y' />
+   <field name='EndSeqNo' required='Y' />
+  </message>
+  <message name='SequenceReset' msgcat='admin' msgtype='4'>
+   <field name='GapFillFlag' required='N' />
+   <field name='NewSeqNo' required='Y' />
+  </message>
+  <message name='Reject' msgcat='admin' msgtype='3'>
+   <field name='RefSeqNum' required='Y' />
+   <field name='Text' required='N' />
+  </message>
+  <message name='Logout' msgcat='admin' msgtype='5'>
+   <field name='Text' required='N' />
+  </message>
+  <message name='NewOrderSingle' msgcat='app' msgtype='D'>
+   <field name='Account' required='N' />
+   <field name='MaxFloor' required='N' />
+   <field name='ClOrdID' required='Y' />
+   <field name='Currency' required='N' />
+   <field name='Symbol' required='Y' />
+   <field name='SecurityID' required='N' />
+   <field name='IDSource' required='N' />
+   <field name='HandlInst' required='Y' />
+   <field name='Side' required='Y' />
+   <field name='OrderQty' required='Y' />
+   <field name='OrdType' required='Y' />
+   <field name='ExecInst' required='N' />
+   <field name='PegDifference' required='N' />
+   <field name='Price' required='N' />
+   <field name='StopPx' required='N' />
+   <field name='TimeInForce' required='N' />
+   <field name='CustomerOrFirm' required='Y' />
+   <field name='Text' required='N' />
+   <field name='OpenClose' required='N' />
+   <field name='LocateReqd' required='Y' />
+   <field name='SecurityType' required='N' />
+   <field name='PutOrCall' required='N' />
+   <field name='StrikePrice' required='N' />
+   <field name='MaturityMonthYear' required='N' />
+   <field name='MaturityDay' required='N' />
+   <field name='SecurityExchange' required='N' />
+   <field name='ContractMultiplier' required='N' />
+   <field name='ExpireDate' required='N' />
+   <field name='ExpireTime' required='N' />
+   <field name='DiscretionInst' required='N' />
+   <field name='DiscretionOffset' required='N' />
+   <field name='EffectiveTime' required='N' />
+   <field name='ExDestination' required='Y' />
+   <field name='ClearingFirm' required='N' />
+   <field name='ClearingAccount' required='N' />
+   <field name='MPID' required='Y' />
+  </message>
+  <message name='ExecutionReport' msgcat='app' msgtype='8'>
+   <field name='Account' required='N' />
+   <field name='ClientID' required='N' />
+   <field name='OrderID' required='Y' />
+   <field name='ClOrdID' required='N' />
+   <field name='OrigClOrdID' required='N' />
+   <field name='ExecID' required='Y' />
+   <field name='ExecTransType' required='Y' />
+   <field name='ExecRefID' required='N' />
+   <field name='OrdStatus' required='Y' />
+   <field name='OrdRejReason' required='N' />
+   <field name='ExecType' required='Y' />
+   <field name='LeavesQty' required='Y' />
+   <field name='SettlmntTyp' required='N' />
+   <field name='WorkingIndicator' required='N' />
+   <field name='Symbol' required='Y' />
+   <field name='Side' required='Y' />
+   <field name='OrderQty' required='Y' />
+   <field name='OrdType' required='N' />
+   <field name='Currency' required='N' />
+   <field name='Price' required='N' />
+   <field name='StopPx' required='N' />
+   <field name='TimeInForce' required='N' />
+   <field name='Rule80A' required='N' />
+   <field name='LastShares' required='Y' />
+   <field name='LastPx' required='Y' />
+   <field name='CumQty' required='Y' />
+   <field name='AvgPx' required='Y' />
+   <field name='TransactTime' required='N' />
+   <field name='Text' required='N' />
+   <field name='ExpireDate' required='N' />
+   <field name='ExpireTime' required='N' />
+   <field name='ClearingFirm' required='N' />
+   <field name='ClearingAccount' required='N' />
+   <field name='SecurityType' required='N' />
+   <field name='PutOrCall' required='N' />
+   <field name='StrikePrice' required='N' />
+   <field name='MaturityMonthYear' required='N' />
+   <field name='MaturityDay' required='N' />
+   <field name='SecurityExchange' required='N' />
+   <field name='ExDestination' required='N' />
+   <field name='LastMkt' required='N' />
+   <field name='CustomerOrFirm' required='N' />
+   <field name='ExecRestatementReason' required='N' />
+  </message>
+  <message name='OrderCancelReplaceRequest' msgcat='app' msgtype='G'>
+   <field name='HandlInst' required='Y' />
+   <field name='OrigClOrdID' required='Y' />
+   <field name='OrderID' required='N' />
+   <field name='ClOrdID' required='Y' />
+   <field name='SettlmntTyp' required='N' />
+   <field name='Symbol' required='Y' />
+   <field name='SecurityID' required='N' />
+   <field name='IDSource' required='N' />
+   <field name='Side' required='Y' />
+   <field name='OrderQty' required='Y' />
+   <field name='OrdType' required='Y' />
+   <field name='Price' required='N' />
+   <field name='StopPx' required='N' />
+   <field name='TimeInForce' required='N' />
+   <field name='Rule80A' required='N' />
+   <field name='Text' required='N' />
+   <field name='ExpireTime' required='N' />
+   <field name='ExpireDate' required='N' />
+   <field name='ClearingFirm' required='N' />
+   <field name='ClearingAccount' required='N' />
+  </message>
+  <message name='OrderCancelRequest' msgcat='app' msgtype='F'>
+   <field name='ClOrdID' required='Y' />
+   <field name='OrigClOrdID' required='Y' />
+   <field name='Symbol' required='Y' />
+   <field name='SecurityID' required='N' />
+   <field name='IDSource' required='N' />
+   <field name='Side' required='Y' />
+   <field name='OrderQty' required='Y' />
+   <field name='Text' required='N' />
+  </message>
+  <message name='OrderCancelReject' msgcat='app' msgtype='9'>
+   <field name='OrderID' required='Y' />
+   <field name='ClOrdID' required='Y' />
+   <field name='OrigClOrdID' required='Y' />
+   <field name='CxlRejReason' required='N' />
+   <field name='CxlRejResponseTo' required='Y' />
+   <field name='Text' required='N' />
+  </message>
+  <message name='OrderStatusRequest' msgcat='app' msgtype='H'>
+   <field name='ClOrdID' required='Y' />
+  </message>
+  <message name='News' msgcat='app' msgtype='B'>
+   <field name='Headline' required='Y' />
+   <field name='DailyNewID' required='Y' />
+   <field name='Urgency' required='Y' />
+   <field name='SecurityExchange' required='N' />
+  </message>
+ </messages>
+ <trailer>
+  <field name='CheckSum' required='Y' />
+ </trailer>
+ <components />
+ <fields>
+  <field number='1' name='Account' type='STRING' />
+  <field number='6' name='AvgPx' type='PRICE' />
+  <field number='7' name='BeginSeqNo' type='INT' />
+  <field number='8' name='BeginString' type='STRING' />
+  <field number='9' name='BodyLength' type='INT' />
+  <field number='10' name='CheckSum' type='STRING' />
+  <field number='11' name='ClOrdID' type='STRING' />
+  <field number='14' name='CumQty' type='QTY' />
+  <field number='15' name='Currency' type='CURRENCY' />
+  <field number='16' name='EndSeqNo' type='INT' />
+  <field number='17' name='ExecID' type='STRING' />
+  <field number='18' name='ExecInst' type='MULTIPLEVALUESTRING'>
+   <value enum='P' description='MARKET_PEG' />
+   <value enum='R' description='PRIMARY_PEG' />
+   <value enum='M' description='MID_PRICE_PEG' />
+   <value enum='G' description='ALL_OR_NONE' />
+   <value enum='W' description='PEG_TO_VWAP' />
+   <value enum='a' description='TRAILING_STOP_PEG' />
+   <value enum='s' description='PEG_TO_STOCK' />
+   <!-- <value enum='e' description='PEG_TO_STOCK' /> -->
+  </field>
+  <field number='19' name='ExecRefID' type='STRING' />
+  <field number='20' name='ExecTransType' type='CHAR'>
+   <value enum='0' description='NEW' />
+   <value enum='1' description='CANCEL' />
+   <value enum='2' description='CORRECT' />
+   <value enum='3' description='STATUS' />
+  </field>
+  <field number='21' name='HandlInst' type='CHAR'>
+   <value enum='2' description='AUTOMATED_EXECUTION_ORDER_PUBLIC_BROKER_INTERVENTION_OK' />
+  </field>
+  <field number='22' name='IDSource' type='STRING'>
+   <value enum='1' description='CUSIP' />
+   <value enum='4' description='ISIN_NUMBER' />
+  </field>
+  <field number='30' name='LastMkt' type='EXCHANGE' />
+  <field number='31' name='LastPx' type='PRICE' />
+  <field number='32' name='LastShares' type='QTY' />
+  <field number='34' name='MsgSeqNum' type='INT' />
+  <field number='35' name='MsgType' type='STRING'>
+   <value enum='0' description='HEARTBEAT' />
+   <value enum='1' description='TEST_REQUEST' />
+   <value enum='2' description='RESEND_REQUEST' />
+   <value enum='3' description='REJECT' />
+   <value enum='4' description='SEQUENCE_RESET' />
+   <value enum='5' description='LOGOUT' />
+   <value enum='8' description='EXECUTION_REPORT' />
+   <value enum='9' description='ORDER_CANCEL_REJECT' />
+   <value enum='A' description='LOGON' />
+   <value enum='D' description='ORDER_SINGLE' />
+   <value enum='F' description='ORDER_CANCEL_REQUEST' />
+   <value enum='G' description='ORDER_CANCEL_REPLACE_REQUEST' />
+   <value enum='H' description='ORDER_STATUS_REQUEST' />
+   <value enum='AB' description='NEW_ORDER_MULTILEG' />
+   <value enum='AC' description='MULTILEG_CANCEL_REPLACE_REQUEST' />
+  </field>
+  <field number='36' name='NewSeqNo' type='INT' />
+  <field number='37' name='OrderID' type='STRING' />
+  <field number='38' name='OrderQty' type='QTY' />
+  <field number='39' name='OrdStatus' type='CHAR'>
+   <value enum='0' description='NEW' />
+   <value enum='1' description='PARTIALLY_FILLED' />
+   <value enum='2' description='FILLED' />
+   <value enum='4' description='CANCELED' />
+   <value enum='5' description='REPLACED' />
+   <value enum='6' description='PENDING_CANCEL' />
+   <value enum='8' description='REJECTED' />
+   <value enum='A' description='PENDING_NEW' />
+   <value enum='C' description='EXPIRED' />
+   <value enum='E' description='PENDING_REPLACE' />
+  </field>
+  <field number='40' name='OrdType' type='CHAR'>
+   <value enum='1' description='MARKET' />
+   <value enum='2' description='LIMIT' />
+   <value enum='3' description='STOP' />
+   <value enum='4' description='STOP_LIMIT' />
+   <value enum='5' description='MARKET_ON_CLOSE' />
+   <value enum='B' description='LIMIT_ON_CLOSE' />
+   <value enum='P' description='PEGGED' />
+   <!-- <value enum='TSL' description='TRAILING_STOP_LIMIT' /> -->
+  </field>
+  <field number='41' name='OrigClOrdID' type='STRING' />
+  <field number='43' name='PossDupFlag' type='BOOLEAN'>
+   <value enum='N' description='NO' />
+   <value enum='Y' description='YES' />
+  </field>
+  <field number='44' name='Price' type='PRICE' />
+  <field number='45' name='RefSeqNum' type='INT' />
+  <field number='47' name='Rule80A' type='CHAR'>
+   <value enum='A' description='AGENCY_SINGLE_ORDER' />
+   <value enum='J' description='PROGRAM_ORDER_INDEX_ARB_FOR_INDIVIDUAL_CUSTOMER' />
+   <value enum='K' description='PROGRAM_ORDER_NON_INDEX_ARB_FOR_INDIVIDUAL_CUSTOMER' />
+   <value enum='I' description='INDIVIDUAL_INVESTOR_SINGLE_ORDER' />
+   <value enum='P' description='PRINCIPAL' />
+   <value enum='U' description='PROGRAM_ORDER_INDEX_ARB_FOR_OTHER_AGENCY' />
+   <value enum='Y' description='PROGRAM_ORDER_NON_INDEX_ARB_FOR_OTHER_AGENCY' />
+   <value enum='M' description='PROGRAM_ORDER_INDEX_ARB_FOR_OTHER_MEMBER' />
+   <value enum='N' description='PROGRAM_ORDER_NON_INDEX_ARB_FOR_OTHER_MEMBER' />
+   <value enum='W' description='ALL_OTHER_ORDERS_AS_AGENT_FOR_OTHER_MEMBER' />
+  </field>
+  <field number='48' name='SecurityID' type='STRING' />
+  <field number='49' name='SenderCompID' type='STRING' />
+  <field number='50' name='SenderSubID' type='STRING' />
+  <field number='51' name='SendingDate' type='LOCALMKTDATE' />
+  <field number='52' name='SendingTime' type='UTCTIMESTAMP' />
+  <field number='54' name='Side' type='CHAR'>
+   <value enum='0' description='ERROR' />
+   <value enum='1' description='BUY' />
+   <value enum='2' description='SELL' />
+   <value enum='3' description='BUY_MINUS' />
+   <value enum='4' description='SELL_PLUS' />
+   <value enum='5' description='SELL_SHORT' />
+   <value enum='6' description='SELL_SHORT_EXEMPT' />
+  </field>
+  <field number='55' name='Symbol' type='STRING' />
+  <field number='56' name='TargetCompID' type='STRING' />
+  <field number='57' name='TargetSubID' type='STRING' />
+  <field number='58' name='Text' type='STRING' />
+  <field number='59' name='TimeInForce' type='CHAR'>
+   <value enum='0' description='DAY' />
+   <value enum='1' description='GOOD_TILL_CANCEL' />
+   <value enum='2' description='AT_THE_OPENING' />
+   <value enum='3' description='IMMEDIATE_OR_CANCEL' />
+   <value enum='4' description='FILL_OR_KILL' />
+   <value enum='6' description='GOOD_TILL_DATE' />
+   <value enum='7' description='AT_THE_CLOSING' />
+   <value enum='8' description='AUCTION' />
+  </field>
+  <field number='60' name='TransactTime' type='UTCTIMESTAMP' />
+  <field number='61' name='Urgency' type='CHAR'>
+   <value enum='0' description='NORMAL' />
+   <value enum='1' description='FLASH' />
+   <value enum='2' description='BACKGROUND' />
+  </field>
+  <field number='63' name='SettlmntTyp' type='CHAR'>
+   <value enum='0' description='REGULAR' />
+  </field>
+  <field number='77' name='OpenClose' type='CHAR'>
+   <value enum='C' description='CLOSE' />
+   <value enum='O' description='OPEN' />
+  </field>
+  <field number='97' name='PossResend' type='BOOLEAN'>
+   <value enum='N' description='NO' />
+   <value enum='Y' description='YES' />
+  </field>
+  <field number='98' name='EncryptMethod' type='INT'>
+   <value enum='0' description='NONE' />
+  </field>
+  <field number='99' name='StopPx' type='PRICE' />
+  <field number='100' name='ExDestination' type='EXCHANGE' />
+  <field number='102' name='CxlRejReason' type='INT'>
+   <value enum='0' description='TOO_LATE_TO_CANCEL' />
+   <value enum='1' description='UNKNOWN_ORDER' />
+   <value enum='2' description='BROKER_OPTION' />
+   <value enum='3' description='ORDER_ALREADY_IN_PENDING_CANCEL_OR_PENDING_REPLACE_STATUS' />
+  </field>
+  <field number='103' name='OrdRejReason' type='INT'>
+   <value enum='0' description='BROKER_OPTION' />
+   <value enum='3' description='ORDER_EXCEEDS_LIMIT' />
+  </field>
+  <field number='108' name='HeartBtInt' type='INT' />
+  <field number='109' name='ClientID' type='STRING' />
+  <field number='111' name='MaxFloor' type='QTY' />
+  <field number='112' name='TestReqID' type='STRING' />
+  <field number='114' name='LocateReqd' type='BOOLEAN'>
+   <value enum='N' description='NO' />
+   <value enum='Y' description='YES' />
+  </field>
+  <field number='122' name='OrigSendingTime' type='UTCTIMESTAMP' />
+  <field number='123' name='GapFillFlag' type='BOOLEAN'>
+   <value enum='N' description='NO' />
+   <value enum='Y' description='YES' />
+  </field>
+  <field number='126' name='ExpireTime' type='UTCTIMESTAMP' />
+  <field number='141' name='ResetSeqNumFlag' type='BOOLEAN'>
+   <value enum='N' description='NO' />
+   <value enum='Y' description='YES' />
+  </field>
+  <field number='148' name='Headline' type='STRING' />
+  <field number='150' name='ExecType' type='CHAR'>
+   <value enum='0' description='NEW' />
+   <value enum='1' description='PARTIAL_FILL' />
+   <value enum='2' description='FILL' />
+   <value enum='4' description='CANCELED' />
+   <value enum='5' description='REPLACE' />
+   <value enum='6' description='PENDING_CANCEL' />
+   <value enum='8' description='REJECTED' />
+   <value enum='A' description='PENDING_NEW' />
+   <value enum='C' description='EXPIRED' />
+   <value enum='D' description='RESTATED' />
+   <value enum='E' description='PENDING_REPLACE' />
+  </field>
+  <field number='151' name='LeavesQty' type='QTY' />
+  <field number='167' name='SecurityType' type='STRING'>
+   <value enum='CS' description='COMMON_STOCK' />
+   <value enum='FUT' description='FUTURE' />
+   <value enum='OPT' description='OPTION' />
+   <value enum='FOP' description='FUTURE_OPTION' />
+   <value enum='WAR' description='WARRANT' />
+   <value enum='MLEG' description='MULTILEG' />
+   <value enum='CASH' description='FOREX' />
+   <value enum='BOND' description='BOND' />
+   <value enum='CFD' description='CFD' />
+   <value enum='CMDTY' description='COMMODITY' />
+   <value enum='FUND' description='MUTUAL_FUND' />
+  </field>
+  <field number='168' name='EffectiveTime' type='UTCTIMESTAMP' />
+  <field number='200' name='MaturityMonthYear' type='MONTHYEAR' />
+  <field number='201' name='PutOrCall' type='INT'>
+   <value enum='0' description='PUT' />
+   <value enum='1' description='CALL' />
+  </field>
+  <field number='202' name='StrikePrice' type='PRICE' />
+  <field number='204' name='CustomerOrFirm' type='INT'>
+   <value enum='0' description='CUSTOMER' />
+   <value enum='1' description='FIRM' />
+  </field>
+  <field number='205' name='MaturityDay' type='DAYOFMONTH' />
+  <field number='207' name='SecurityExchange' type='EXCHANGE' />
+  <field number='211' name='PegDifference' type='PRICEOFFSET' />
+  <field number='231' name='ContractMultiplier' type='FLOAT' />
+  <field number='378' name='ExecRestatementReason' type='INT'>
+   <value enum='0' description='GT_CORPORATE_ACTION' />
+   <value enum='1' description='GT_RENEWAL' />
+   <value enum='2' description='VERBAL_CHANGE' />
+   <value enum='3' description='REPRICING_OF_ORDER' />
+   <value enum='4' description='BROKER_OPTION' />
+   <value enum='5' description='PARTIAL_DECLINE_OF_ORDERQTY' />
+  </field>
+  <field number='388' name='DiscretionInst' type='CHAR'>
+   <value enum='0' description='RELATED_TO_DISPLAYED_PRICE' />
+  </field>
+  <field number='389' name='DiscretionOffset' type='PRICEOFFSET' />
+  <field number='432' name='ExpireDate' type='LOCALMKTDATE' />
+  <field number='434' name='CxlRejResponseTo' type='CHAR'>
+   <value enum='1' description='ORDER_CANCEL_REQUEST' />
+   <value enum='2' description='ORDER_CANCEL_REPLACE_REQUEST' />
+  </field>
+  <field number='439' name='ClearingFirm' type='STRING' />
+  <field number='440' name='ClearingAccount' type='STRING' />
+  <field number='636' name='WorkingIndicator' type='BOOLEAN'>
+   <value enum='N' description='NO' />
+   <value enum='Y' description='YES' />
+  </field>
+  <field number='5700' name='MPID' type='STRING' />
+  <field number='6143' name='DailyNewID' type='INT' />
+ </fields>
+</fix>

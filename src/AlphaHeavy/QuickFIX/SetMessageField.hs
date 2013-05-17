@@ -17,36 +17,36 @@ class SetMessageField a where
   setMessageField :: QuickFIXMessagePtr -> Int -> a -> IO ()
 
 instance SetMessageField Bool where
-  setMessageField msg fid val =
-    setBoolField msg (fromIntegral fid) val
+  setMessageField msg =
+    setBoolField msg . fromIntegral
 
 instance SetMessageField Char where
-  setMessageField msg fid val =
-    setCharField msg (fromIntegral fid) val
+  setMessageField msg =
+    setCharField msg . fromIntegral
 
 instance SetMessageField Int where
-  setMessageField msg fid val =
-    setIntField msg (fromIntegral fid) (fromIntegral val)
+  setMessageField msg fid =
+    setIntField msg (fromIntegral fid) . fromIntegral
 
 instance SetMessageField Int32 where
-  setMessageField msg fid val =
-    setIntField msg (fromIntegral fid) val
+  setMessageField msg =
+    setIntField msg . fromIntegral
 
 instance SetMessageField Int64 where
-  setMessageField msg fid val =
-    setIntField msg (fromIntegral fid) (fromIntegral val)
+  setMessageField msg fid =
+    setIntField msg (fromIntegral fid) . fromIntegral
 
 instance SetMessageField Float where
-  setMessageField msg fid val =
-    setDoubleField msg (fromIntegral fid) (realToFrac val)
+  setMessageField msg fid =
+    setDoubleField msg (fromIntegral fid) . realToFrac
 
 instance SetMessageField Double where
-  setMessageField msg fid val =
-    setDoubleField msg (fromIntegral fid) val
+  setMessageField msg =
+    setDoubleField msg . fromIntegral
 
 instance SetMessageField String where
-  setMessageField msg fid val =
-    setStringFieldWrapper msg (fromIntegral fid) val
+  setMessageField msg =
+    setStringFieldWrapper msg . fromIntegral
 
 instance SetMessageField ByteString where
   setMessageField = error "no bytestring support yet"

@@ -77,7 +77,7 @@ instance (GRecvMessage a, GRecvMessage b) => GRecvMessage (a :*: b) where
 
 instance (Nat n, Generic a, GGetMessageFields (Rep a)) => GRecvMessage (K1 c (Message n dir a)) where
   gRecvMessage ptr msgId
-    | msgId == msgId' = do
+    | msgId == msgId' =
         Just . K1 . Message . to <$> gGetMessageFields ptr
     | otherwise = return Nothing
     where msgId' = chr $ toInt (undefined :: n)

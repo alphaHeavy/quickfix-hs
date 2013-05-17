@@ -49,7 +49,7 @@ instance GetMessageField Double where
     getDoubleField msg (fromIntegral fid)
 
 instance GetMessageField String where
-  getMessageField msg fid = do
+  getMessageField msg fid =
     getStringFieldCPS msg (fromIntegral fid)
 
 instance GetMessageField ByteString where
