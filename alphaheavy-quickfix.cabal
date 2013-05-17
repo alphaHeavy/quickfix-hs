@@ -1,0 +1,45 @@
+Name:                alphaheavy-quickfix
+Version:             0.1
+License:             BSD3
+License-File:        LICENSE
+Build-type:          Simple
+
+Cabal-version:       >= 1.10
+
+Library
+  Default-Language:  Haskell2010
+  Build-depends:     base,
+                     aeson,
+                     bytestring >= 0.9,
+                     conduit,
+                     containers,
+                     Decimal,
+                     ghc-prim,
+                     mtl,
+                     old-locale,
+                     lens,
+                     resourcet,
+                     stm,
+                     text >= 0.11,
+                     time,
+                     type-level
+
+  Exposed-modules:   AlphaHeavy.FIX
+                     AlphaHeavy.QuickFIX
+
+  Other-modules:     AlphaHeavy.QuickFIX.Foreign
+                     AlphaHeavy.QuickFIX.GReceive
+                     AlphaHeavy.QuickFIX.GSend
+                     AlphaHeavy.QuickFIX.GetMessageField
+                     AlphaHeavy.QuickFIX.SetMessageField
+                     AlphaHeavy.QuickFIX.Types
+
+  HS-Source-Dirs:    src
+
+  GHC-Options:       -Wall
+  CC-Options:        -O2 -ggdb
+
+  C-Sources:         cbits/QuickFIXThunks.cpp
+
+  Includes:          quickfix/index.h
+  Extra-Libraries:   quickfix, stdc++

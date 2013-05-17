@@ -1,0 +1,33 @@
+# vim related
+*.swo
+*.swp
+*~
+
+# GHC build goo
+dist/
+docs/
+out/
+*.dump-*
+*.hi
+*.hi-boot
+*.lo
+*.o
+*.o-boot
+*.p_hi
+*.p_o
+
+# GHC profiling files
+.hpc/
+*.hcr
+*.hp
+*.prof
+
+# GHC stub files
+*_stub.c
+*_stub.h
+
+# OSX symbol packages
+*.dSYM/
+
+#OS X
+.DS_Store
