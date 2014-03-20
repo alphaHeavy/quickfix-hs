@@ -1,22 +1,14 @@
-{-# LANGUAGE DeriveGeneric, GeneralizedNewtypeDeriving,
+{-# LANGUAGE DeriveGeneric, DataKinds, GeneralizedNewtypeDeriving,
   TypeFamilies, TypeOperators #-}
 module AlphaHeavy.FIX.FIX42.Types where
 import qualified Data.ByteString
-import qualified Data.TypeLevel
 import qualified Control.Lens
 import GHC.Generics
 import AlphaHeavy.FIX
  
-data Logon = Logon (AlphaHeavy.FIX.Enumeration
-                      (Data.TypeLevel.D9 Data.TypeLevel.:* Data.TypeLevel.D8)
-                      EncryptMethod)
-                   (AlphaHeavy.FIX.Field
-                      (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D8)
-                      HeartBtInt)
-                   (Prelude.Maybe
-                      (AlphaHeavy.FIX.Enumeration
-                         (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D1)
-                         ResetSeqNumFlag))
+data Logon = Logon (AlphaHeavy.FIX.Enumeration 98 EncryptMethod)
+                   (AlphaHeavy.FIX.Field 108 HeartBtInt)
+                   (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 141 ResetSeqNumFlag))
            deriving (Generic, Show, Eq)
  
 instance EncryptMethodLens Logon where
@@ -38,9 +30,7 @@ instance ResetSeqNumFlagMaybeLens Logon where
                   = Logon _x1 _x2 (fmap AlphaHeavy.FIX.Enumeration val)
  
 data Heartbeat = Heartbeat (Prelude.Maybe
-                              (AlphaHeavy.FIX.Field
-                                 (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                 TestReqID))
+                              (AlphaHeavy.FIX.Field 112 TestReqID))
                deriving (Generic, Show, Eq)
  
 instance TestReqIDMaybeLens Heartbeat where
@@ -49,9 +39,7 @@ instance TestReqIDMaybeLens Heartbeat where
                 g _ = Nothing
                 s (Heartbeat _) val = Heartbeat (fmap AlphaHeavy.FIX.Field val)
  
-data TestRequest = TestRequest (AlphaHeavy.FIX.Field
-                                  (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                  TestReqID)
+data TestRequest = TestRequest (AlphaHeavy.FIX.Field 112 TestReqID)
                  deriving (Generic, Show, Eq)
  
 instance TestReqIDLens TestRequest where
@@ -59,12 +47,9 @@ instance TestReqIDLens TestRequest where
           where g (TestRequest (AlphaHeavy.FIX.Field x)) = x
                 s (TestRequest _) val = TestRequest (AlphaHeavy.FIX.Field val)
  
-data ResendRequest = ResendRequest (AlphaHeavy.FIX.Field
-                                      (Data.TypeLevel.D7)
+data ResendRequest = ResendRequest (AlphaHeavy.FIX.Field 7
                                       BeginSeqNo)
-                                   (AlphaHeavy.FIX.Field
-                                      (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D6)
-                                      EndSeqNo)
+                                   (AlphaHeavy.FIX.Field 16 EndSeqNo)
                    deriving (Generic, Show, Eq)
  
 instance BeginSeqNoLens ResendRequest where
@@ -79,13 +64,9 @@ instance EndSeqNoLens ResendRequest where
                 s (ResendRequest _x1 _) val
                   = ResendRequest _x1 (AlphaHeavy.FIX.Field val)
  
-data SequenceReset = SequenceReset (AlphaHeavy.FIX.Field
-                                      (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D6)
+data SequenceReset = SequenceReset (AlphaHeavy.FIX.Field 36
                                       NewSeqNo)
-                                   (Prelude.Maybe
-                                      (AlphaHeavy.FIX.Enumeration
-                                         (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D3)
-                                         GapFillFlag))
+                                   (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 123 GapFillFlag))
                    deriving (Generic, Show, Eq)
  
 instance NewSeqNoLens SequenceReset where
@@ -102,13 +83,8 @@ instance GapFillFlagMaybeLens SequenceReset where
                 s (SequenceReset _x1 _) val
                   = SequenceReset _x1 (fmap AlphaHeavy.FIX.Enumeration val)
  
-data Reject = Reject (AlphaHeavy.FIX.Field
-                        (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D5)
-                        RefSeqNum)
-                     (Prelude.Maybe
-                        (AlphaHeavy.FIX.Field
-                           (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                           Text))
+data Reject = Reject (AlphaHeavy.FIX.Field 45 RefSeqNum)
+                     (Prelude.Maybe (AlphaHeavy.FIX.Field 58 Text))
             deriving (Generic, Show, Eq)
  
 instance RefSeqNumLens Reject where
@@ -122,10 +98,7 @@ instance TextMaybeLens Reject where
                 g _ = Nothing
                 s (Reject _x1 _) val = Reject _x1 (fmap AlphaHeavy.FIX.Field val)
  
-data Logout = Logout (Prelude.Maybe
-                        (AlphaHeavy.FIX.Field
-                           (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                           Text))
+data Logout = Logout (Prelude.Maybe (AlphaHeavy.FIX.Field 58 Text))
             deriving (Generic, Show, Eq)
  
 instance TextMaybeLens Logout where
@@ -134,138 +107,43 @@ instance TextMaybeLens Logout where
                 g _ = Nothing
                 s (Logout _) val = Logout (fmap AlphaHeavy.FIX.Field val)
  
-data NewOrderSingle = NewOrderSingle (AlphaHeavy.FIX.Field
-                                        (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
+data NewOrderSingle = NewOrderSingle (AlphaHeavy.FIX.Field 11
                                         ClOrdID)
-                                     (AlphaHeavy.FIX.Enumeration
-                                        (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                        CustomerOrFirm)
-                                     (AlphaHeavy.FIX.Field
-                                        (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                        ExDestination)
-                                     (AlphaHeavy.FIX.Enumeration
-                                        (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                        HandlInst)
-                                     (AlphaHeavy.FIX.Enumeration
-                                        (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                        LocateReqd)
-                                     (AlphaHeavy.FIX.Field
-                                        (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D7 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                        MPID)
-                                     (AlphaHeavy.FIX.Enumeration
-                                        (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                        OrdType)
-                                     (AlphaHeavy.FIX.Field
-                                        (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                        Quantity)
-                                     (AlphaHeavy.FIX.Enumeration
-                                        (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                        Side)
-                                     (AlphaHeavy.FIX.Field
-                                        (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                        Symbol)
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field (Data.TypeLevel.D1) Account))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                           ClearingAccount))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                           ClearingFirm))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                           ContractMultiplier))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                           Currency))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D8 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                           DiscretionInst))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D8 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                           DiscretionOffset))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                           EffectiveTime))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                           ExecInst))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                           ExpireDate))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D6)
-                                           ExpireTime))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                           IDSource))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                           MaturityDay))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                           MaturityMonthYear))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                           Quantity))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D7 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                           OpenClose))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                           PegDifference))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                           Price))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                           PutOrCall))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                           SecurityExchange))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                           SecurityID))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                           SecurityType))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D9 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                           Price))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                           Price))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Field
-                                           (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                           Text))
-                                     (Prelude.Maybe
-                                        (AlphaHeavy.FIX.Enumeration
-                                           (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                           TimeInForce))
+                                     (AlphaHeavy.FIX.Enumeration 204 CustomerOrFirm)
+                                     (AlphaHeavy.FIX.Field 100 ExDestination)
+                                     (AlphaHeavy.FIX.Enumeration 21 HandlInst)
+                                     (AlphaHeavy.FIX.Enumeration 114 LocateReqd)
+                                     (AlphaHeavy.FIX.Field 5700 MPID)
+                                     (AlphaHeavy.FIX.Enumeration 40 OrdType)
+                                     (AlphaHeavy.FIX.Field 38 Quantity)
+                                     (AlphaHeavy.FIX.Enumeration 54 Side)
+                                     (AlphaHeavy.FIX.Field 55 Symbol)
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 1 Account))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 440 ClearingAccount))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 439 ClearingFirm))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 231 ContractMultiplier))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 15 Currency))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 388 DiscretionInst))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 389 DiscretionOffset))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 168 EffectiveTime))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 18 ExecInst))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 432 ExpireDate))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 126 ExpireTime))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 22 IDSource))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 205 MaturityDay))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 200 MaturityMonthYear))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 111 Quantity))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 77 OpenClose))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 211 PegDifference))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 44 Price))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 201 PutOrCall))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 207 SecurityExchange))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 48 SecurityID))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 167 SecurityType))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 99 Price))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 202 Price))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Field 58 Text))
+                                     (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 59 TimeInForce))
                     deriving (Generic, Show, Eq)
  
 instance ClOrdIDLens NewOrderSingle where
@@ -1621,163 +1499,53 @@ instance TimeInForceMaybeLens NewOrderSingle where
                       _x35
                       (fmap AlphaHeavy.FIX.Enumeration val)
  
-data ExecutionReport = ExecutionReport (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D6)
+data ExecutionReport = ExecutionReport (AlphaHeavy.FIX.Field 6
                                           Price)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                          Quantity)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                          ExecID)
-                                       (AlphaHeavy.FIX.Enumeration
-                                          (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                          ExecTransType)
-                                       (AlphaHeavy.FIX.Enumeration
-                                          (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                          ExecType)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                          Price)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                          Quantity)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                          Quantity)
-                                       (AlphaHeavy.FIX.Enumeration
-                                          (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                          OrdStatus)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                          OrderID)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                          Quantity)
-                                       (AlphaHeavy.FIX.Enumeration
-                                          (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                          Side)
-                                       (AlphaHeavy.FIX.Field
-                                          (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                          Symbol)
+                                       (AlphaHeavy.FIX.Field 14 Quantity)
+                                       (AlphaHeavy.FIX.Field 17 ExecID)
+                                       (AlphaHeavy.FIX.Enumeration 20 ExecTransType)
+                                       (AlphaHeavy.FIX.Enumeration 150 ExecType)
+                                       (AlphaHeavy.FIX.Field 31 Price)
+                                       (AlphaHeavy.FIX.Field 32 Quantity)
+                                       (AlphaHeavy.FIX.Field 151 Quantity)
+                                       (AlphaHeavy.FIX.Enumeration 39 OrdStatus)
+                                       (AlphaHeavy.FIX.Field 37 OrderID)
+                                       (AlphaHeavy.FIX.Field 38 Quantity)
+                                       (AlphaHeavy.FIX.Enumeration 54 Side)
+                                       (AlphaHeavy.FIX.Field 55 Symbol)
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 1 Account))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 11 ClOrdID))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 440 ClearingAccount))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 439 ClearingFirm))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 109 ClientID))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 15 Currency))
                                        (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field (Data.TypeLevel.D1) Account))
+                                          (AlphaHeavy.FIX.Enumeration 204 CustomerOrFirm))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 100 ExDestination))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 19 ExecRefID))
                                        (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                             ClOrdID))
+                                          (AlphaHeavy.FIX.Enumeration 378 ExecRestatementReason))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 432 ExpireDate))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 126 ExpireTime))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 30 LastMkt))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 205 MaturityDay))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 200 MaturityMonthYear))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 103 OrdRejReason))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 40 OrdType))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 41 OrigClOrdID))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 44 Price))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 201 PutOrCall))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 47 Rule80A))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 207 SecurityExchange))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 167 SecurityType))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 63 SettlmntTyp))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 99 Price))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 202 Price))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 58 Text))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Enumeration 59 TimeInForce))
+                                       (Prelude.Maybe (AlphaHeavy.FIX.Field 60 TransactTime))
                                        (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                             ClearingAccount))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                             ClearingFirm))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                             ClientID))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                             Currency))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                             CustomerOrFirm))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                             ExDestination))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                             ExecRefID))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D7 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                             ExecRestatementReason))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                             ExpireDate))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D6)
-                                             ExpireTime))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                             LastMkt))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                             MaturityDay))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                             MaturityMonthYear))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D3)
-                                             OrdRejReason))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                             OrdType))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                             OrigClOrdID))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                             Price))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                             PutOrCall))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                             Rule80A))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                             SecurityExchange))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                             SecurityType))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D3)
-                                             SettlmntTyp))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D9 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                             Price))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                             Price))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                             Text))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                             TimeInForce))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Field
-                                             (Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                             TransactTime))
-                                       (Prelude.Maybe
-                                          (AlphaHeavy.FIX.Enumeration
-                                             (Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D6)
-                                             WorkingIndicator))
+                                          (AlphaHeavy.FIX.Enumeration 636 WorkingIndicator))
                      deriving (Generic, Show, Eq)
  
 instance AvgPxLens ExecutionReport where
@@ -3786,77 +3554,45 @@ instance WorkingIndicatorMaybeLens ExecutionReport where
                       (fmap AlphaHeavy.FIX.Enumeration val)
  
 data OrderCancelReplaceRequest = OrderCancelReplaceRequest (AlphaHeavy.FIX.Field
-                                                              (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
+                                                              11
                                                               ClOrdID)
-                                                           (AlphaHeavy.FIX.Enumeration
-                                                              (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                                              HandlInst)
-                                                           (AlphaHeavy.FIX.Enumeration
-                                                              (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D0)
-                                                              OrdType)
-                                                           (AlphaHeavy.FIX.Field
-                                                              (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                              Quantity)
-                                                           (AlphaHeavy.FIX.Field
-                                                              (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                                              OrigClOrdID)
-                                                           (AlphaHeavy.FIX.Enumeration
-                                                              (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                                              Side)
-                                                           (AlphaHeavy.FIX.Field
-                                                              (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                                              Symbol)
+                                                           (AlphaHeavy.FIX.Enumeration 21 HandlInst)
+                                                           (AlphaHeavy.FIX.Enumeration 40 OrdType)
+                                                           (AlphaHeavy.FIX.Field 38 Quantity)
+                                                           (AlphaHeavy.FIX.Field 41 OrigClOrdID)
+                                                           (AlphaHeavy.FIX.Enumeration 54 Side)
+                                                           (AlphaHeavy.FIX.Field 55 Symbol)
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D0)
+                                                              (AlphaHeavy.FIX.Field 440
                                                                  ClearingAccount))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D9)
+                                                              (AlphaHeavy.FIX.Field 439
                                                                  ClearingFirm))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                                                 ExpireDate))
+                                                              (AlphaHeavy.FIX.Field 432 ExpireDate))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D6)
-                                                                 ExpireTime))
+                                                              (AlphaHeavy.FIX.Field 126 ExpireTime))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Enumeration
-                                                                 (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D2)
+                                                              (AlphaHeavy.FIX.Enumeration 22
                                                                  IDSource))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                                                 OrderID))
+                                                              (AlphaHeavy.FIX.Field 37 OrderID))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                                                 Price))
+                                                              (AlphaHeavy.FIX.Field 44 Price))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Enumeration
-                                                                 (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D7)
+                                                              (AlphaHeavy.FIX.Enumeration 47
                                                                  Rule80A))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                                 SecurityID))
+                                                              (AlphaHeavy.FIX.Field 48 SecurityID))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Enumeration
-                                                                 (Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D3)
+                                                              (AlphaHeavy.FIX.Enumeration 63
                                                                  SettlmntTyp))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D9 Data.TypeLevel.:* Data.TypeLevel.D9)
-                                                                 Price))
+                                                              (AlphaHeavy.FIX.Field 99 Price))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Field
-                                                                 (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                                 Text))
+                                                              (AlphaHeavy.FIX.Field 58 Text))
                                                            (Prelude.Maybe
-                                                              (AlphaHeavy.FIX.Enumeration
-                                                                 (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D9)
+                                                              (AlphaHeavy.FIX.Enumeration 59
                                                                  TimeInForce))
                                deriving (Generic, Show, Eq)
  
@@ -4333,32 +4069,16 @@ instance TimeInForceMaybeLens OrderCancelReplaceRequest where
                       (fmap AlphaHeavy.FIX.Enumeration val)
  
 data OrderCancelRequest = OrderCancelRequest (AlphaHeavy.FIX.Field
-                                                (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
+                                                11
                                                 ClOrdID)
-                                             (AlphaHeavy.FIX.Field
-                                                (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                Quantity)
-                                             (AlphaHeavy.FIX.Field
-                                                (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                                OrigClOrdID)
-                                             (AlphaHeavy.FIX.Enumeration
-                                                (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                                Side)
-                                             (AlphaHeavy.FIX.Field
-                                                (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D5)
-                                                Symbol)
+                                             (AlphaHeavy.FIX.Field 38 Quantity)
+                                             (AlphaHeavy.FIX.Field 41 OrigClOrdID)
+                                             (AlphaHeavy.FIX.Enumeration 54 Side)
+                                             (AlphaHeavy.FIX.Field 55 Symbol)
                                              (Prelude.Maybe
-                                                (AlphaHeavy.FIX.Enumeration
-                                                   (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                                   IDSource))
-                                             (Prelude.Maybe
-                                                (AlphaHeavy.FIX.Field
-                                                   (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                   SecurityID))
-                                             (Prelude.Maybe
-                                                (AlphaHeavy.FIX.Field
-                                                   (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                   Text))
+                                                (AlphaHeavy.FIX.Enumeration 22 IDSource))
+                                             (Prelude.Maybe (AlphaHeavy.FIX.Field 48 SecurityID))
+                                             (Prelude.Maybe (AlphaHeavy.FIX.Field 58 Text))
                         deriving (Generic, Show, Eq)
  
 instance ClOrdIDLens OrderCancelRequest where
@@ -4442,26 +4162,14 @@ instance TextMaybeLens OrderCancelRequest where
                   = OrderCancelRequest _x1 _x2 _x3 _x4 _x5 _x6 _x7
                       (fmap AlphaHeavy.FIX.Field val)
  
-data OrderCancelReject = OrderCancelReject (AlphaHeavy.FIX.Field
-                                              (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
+data OrderCancelReject = OrderCancelReject (AlphaHeavy.FIX.Field 11
                                               ClOrdID)
-                                           (AlphaHeavy.FIX.Enumeration
-                                              (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D4)
-                                              CxlRejResponseTo)
-                                           (AlphaHeavy.FIX.Field
-                                              (Data.TypeLevel.D3 Data.TypeLevel.:* Data.TypeLevel.D7)
-                                              OrderID)
-                                           (AlphaHeavy.FIX.Field
-                                              (Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D1)
-                                              OrigClOrdID)
+                                           (AlphaHeavy.FIX.Enumeration 434 CxlRejResponseTo)
+                                           (AlphaHeavy.FIX.Field 37 OrderID)
+                                           (AlphaHeavy.FIX.Field 41 OrigClOrdID)
                                            (Prelude.Maybe
-                                              (AlphaHeavy.FIX.Enumeration
-                                                 (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D2)
-                                                 CxlRejReason))
-                                           (Prelude.Maybe
-                                              (AlphaHeavy.FIX.Field
-                                                 (Data.TypeLevel.D5 Data.TypeLevel.:* Data.TypeLevel.D8)
-                                                 Text))
+                                              (AlphaHeavy.FIX.Enumeration 102 CxlRejReason))
+                                           (Prelude.Maybe (AlphaHeavy.FIX.Field 58 Text))
                        deriving (Generic, Show, Eq)
  
 instance ClOrdIDLens OrderCancelReject where
@@ -4514,7 +4222,7 @@ instance TextMaybeLens OrderCancelReject where
                       (fmap AlphaHeavy.FIX.Field val)
  
 data OrderStatusRequest = OrderStatusRequest (AlphaHeavy.FIX.Field
-                                                (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D1)
+                                                11
                                                 ClOrdID)
                         deriving (Generic, Show, Eq)
  
@@ -4524,19 +4232,10 @@ instance ClOrdIDLens OrderStatusRequest where
                 s (OrderStatusRequest _) val
                   = OrderStatusRequest (AlphaHeavy.FIX.Field val)
  
-data News = News (AlphaHeavy.FIX.Field
-                    (Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D3)
-                    DailyNewID)
-                 (AlphaHeavy.FIX.Field
-                    (Data.TypeLevel.D1 Data.TypeLevel.:* Data.TypeLevel.D4 Data.TypeLevel.:* Data.TypeLevel.D8)
-                    Headline)
-                 (AlphaHeavy.FIX.Enumeration
-                    (Data.TypeLevel.D6 Data.TypeLevel.:* Data.TypeLevel.D1)
-                    Urgency)
-                 (Prelude.Maybe
-                    (AlphaHeavy.FIX.Field
-                       (Data.TypeLevel.D2 Data.TypeLevel.:* Data.TypeLevel.D0 Data.TypeLevel.:* Data.TypeLevel.D7)
-                       SecurityExchange))
+data News = News (AlphaHeavy.FIX.Field 6143 DailyNewID)
+                 (AlphaHeavy.FIX.Field 148 Headline)
+                 (AlphaHeavy.FIX.Enumeration 61 Urgency)
+                 (Prelude.Maybe (AlphaHeavy.FIX.Field 207 SecurityExchange))
           deriving (Generic, Show, Eq)
  
 instance DailyNewIDLens News where

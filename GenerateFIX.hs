@@ -206,7 +206,8 @@ parseFIXDocument root@(Element "fix" _ _) = FIX header messages' trailer compone
           | Just val <- Map.lookup name fieldMap = val
           | otherwise = error $ "Missing field for " ++ name
 
-typeNat i = UnQual (Ident ("(" ++ intercalate " Data.TypeLevel.:* " (fmap (\ x -> "Data.TypeLevel.D"++[x]) (show i)) ++ ")"))
+typeNat :: Int -> QName
+typeNat = UnQual . Ident . show
 
 strongFIXTyCon :: Field -> Type
 strongFIXTyCon f@Field{fieldID, requiredField} =
@@ -504,11 +505,10 @@ generateMaybeLensClassDecl field@Field{fieldName} = decl where
 generateMessageModule :: FIX -> String -> Module
 generateMessageModule (FIX _ messages _ _ fields) version = Module srcLoc modName pragmas warningText exports imports decls
   where modName       = ModuleName $ "AlphaHeavy.FIX.FIX" ++ version ++ ".Types"
-        pragmas       = [LanguagePragma srcLoc $ Ident <$> ["DeriveGeneric", "GeneralizedNewtypeDeriving", "TypeFamilies", "TypeOperators"]]
+        pragmas       = [LanguagePragma srcLoc $ Ident <$> ["DeriveGeneric", "DataKinds", "GeneralizedNewtypeDeriving", "TypeFamilies", "TypeOperators"]]
         warningText   = Nothing
         exports       = Nothing
-        imports       = [ qualifiedImport "Data.ByteString", qualifiedImport "Data.TypeLevel"
-                        , qualifiedImport "Control.Lens"
+        imports       = [ qualifiedImport "Data.ByteString", qualifiedImport "Control.Lens"
                         , unqualifiedImport "GHC.Generics", unqualifiedImport "AlphaHeavy.FIX"]
         groups        = generateGroups messages
         fieldEnums    = [i | i@(Field _ _ _ (FIXEnum _ _ (_:_))) <- fields]
