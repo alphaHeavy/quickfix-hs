@@ -8,9 +8,9 @@ Cabal-version:       >= 1.10
 
 Library
   Default-Language:  Haskell2010
-  Build-depends:     base,
+  Build-depends:     base >= 4.7,
                      bytestring >= 0.9,
-                     conduit,
+                     conduit > 1.0,
                      containers,
                      Decimal,
                      mtl,
@@ -18,8 +18,7 @@ Library
                      lens,
                      resourcet,
                      stm,
-                     time,
-                     type-level
+                     time
 
   Exposed-modules:   AlphaHeavy.FIX
                      AlphaHeavy.FIX.FIX42.Factory

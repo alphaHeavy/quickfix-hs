@@ -9,8 +9,9 @@ module AlphaHeavy.QuickFIX.GSend where
 
 import Control.Monad (forM_)
 import Data.Char (chr)
-import Data.TypeLevel (Nat, toInt)
+import Data.Proxy (Proxy(..))
 import GHC.Generics
+import GHC.TypeLits (KnownNat, natVal)
 
 import AlphaHeavy.FIX as FIX
 import AlphaHeavy.QuickFIX.Foreign
@@ -26,13 +27,13 @@ sendMessage
 sendMessage sender target = gSendMessage sender target . from
 
 sendMessage'
-  :: forall a dir n . (Nat n, Generic a, GSetMessageFields (Rep a))
+  :: forall a dir n . (Generic a, GSetMessageFields (Rep a), KnownNat n)
   => String
   -> String
   -> Message n dir a
   -> IO ()
 sendMessage' senderCompID targetCompID (FIX.Message msg) = do
-  let msgId = chr $ toInt (undefined :: n)
+  let msgId = chr . fromIntegral $ natVal (Proxy :: Proxy n)
   sendMessageWithWrapper senderCompID targetCompID msgId $ \ h ->
     gSetMessageFields h (from msg)
 
@@ -54,7 +55,7 @@ instance (GSendMessage a, GSendMessage b) => GSendMessage (a :*: b) where
     gSendMessage sender target x
     gSendMessage sender target y
 
-instance (Nat n, Generic a, GSetMessageFields (Rep a)) => GSendMessage (K1 c (Message n dir a)) where
+instance (Generic a, GSetMessageFields (Rep a), KnownNat n) => GSendMessage (K1 c (Message n dir a)) where
   gSendMessage sender target = sendMessage' sender target . unK1
 
 -- |
@@ -66,35 +67,35 @@ class GSetMessageFields (f :: * -> *) where
 instance GSetMessageFields f => GSetMessageFields (M1 i c f) where
   gSetMessageFields msg = gSetMessageFields msg . unM1
 
-instance (Nat n, FieldTag a, SetMessageField (FieldTagRep a)) => GSetMessageFields (K1 c (Enumeration n a)) where
+instance (FieldTag a, KnownNat n, SetMessageField (FieldTagRep a)) => GSetMessageFields (K1 c (Enumeration n a)) where
   gSetMessageFields msg (K1 (Enumeration val)) = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     setMessageField msg fieldId (toFieldTagRep val)
 
-instance (Nat n, FieldTag a, SetMessageField (FieldTagRep a)) => GSetMessageFields (K1 c (Maybe (Enumeration n a))) where
+instance (FieldTag a, KnownNat n,  SetMessageField (FieldTagRep a)) => GSetMessageFields (K1 c (Maybe (Enumeration n a))) where
   gSetMessageFields msg (K1 (Just (Enumeration val))) = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     setMessageField msg fieldId (toFieldTagRep val)
 
   gSetMessageFields _ (K1 Nothing) =
     return ()
 
-instance (Nat n, Generic a, GSetMessageField (Rep a)) => GSetMessageFields (K1 c (Maybe (Field n a))) where
+instance (Generic a, GSetMessageField (Rep a), KnownNat n) => GSetMessageFields (K1 c (Maybe (Field n a))) where
   gSetMessageFields msg (K1 (Just (Field val))) = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     gSetMessageField msg fieldId (from val)
 
   gSetMessageFields _ (K1 Nothing) =
     return ()
 
-instance (Nat n, Generic a, GSetMessageField (Rep a)) => GSetMessageFields (K1 c (Field n a)) where
+instance (Generic a, GSetMessageField (Rep a), KnownNat n) => GSetMessageFields (K1 c (Field n a)) where
   gSetMessageFields msg (K1 (Field val)) = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     gSetMessageField msg fieldId (from val)
 
-instance (Nat n, Generic a, GSetMessageFields (Rep a)) => GSetMessageFields (K1 c (Group n a)) where
+instance (Generic a, GSetMessageFields (Rep a), KnownNat n) => GSetMessageFields (K1 c (Group n a)) where
   gSetMessageFields msg (K1 (Group xs@(_:_))) = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = natVal (Proxy :: Proxy n)
     putStrLn $ "TODO: properly implement groups: " ++ show fieldId
     forM_ xs $ gSetMessageFields msg . from
 

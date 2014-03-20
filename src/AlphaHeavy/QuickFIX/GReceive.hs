@@ -13,8 +13,9 @@ import Control.Monad -- (forM_)
 import Control.Exception (SomeException, catch, throwIO)
 import qualified Data.ByteString as B
 import Data.Char (chr)
-import Data.TypeLevel (Nat, toInt)
+import Data.Proxy (Proxy (..))
 import GHC.Generics
+import GHC.TypeLits (KnownNat, natVal)
 
 import AlphaHeavy.FIX as FIX
 import AlphaHeavy.QuickFIX.Foreign
@@ -75,12 +76,12 @@ instance (GRecvMessage a, GRecvMessage b) => GRecvMessage (a :*: b) where
       (Just a, Just b) -> Just (a :*: b)
       _ -> Nothing
 
-instance (Nat n, Generic a, GGetMessageFields (Rep a)) => GRecvMessage (K1 c (Message n dir a)) where
+instance (Generic a, GGetMessageFields (Rep a), KnownNat n) => GRecvMessage (K1 c (Message n dir a)) where
   gRecvMessage ptr msgId
     | msgId == msgId' =
         Just . K1 . Message . to <$> gGetMessageFields ptr
     | otherwise = return Nothing
-    where msgId' = chr $ toInt (undefined :: n)
+    where msgId' = chr . fromIntegral $ natVal (Proxy :: Proxy n)
 
 -- |
 -- Message field iteration. Find each 'Field' within the message and its
@@ -91,9 +92,9 @@ class GGetMessageFields (f :: * -> *) where
 instance GGetMessageFields f => GGetMessageFields (M1 i c f) where
   gGetMessageFields msg = M1 <$> gGetMessageFields msg
 
-instance (Nat n, FieldTag a, GetMessageField (FieldTagRep a), Show (FieldTagRep a)) => GGetMessageFields (K1 c (Maybe (Enumeration n a))) where
+instance (FieldTag a, GetMessageField (FieldTagRep a), KnownNat n, Show (FieldTagRep a)) => GGetMessageFields (K1 c (Maybe (Enumeration n a))) where
   gGetMessageFields msg = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     isSet <- isFieldSet msg (fromIntegral fieldId)
     if isSet
       then do
@@ -103,9 +104,9 @@ instance (Nat n, FieldTag a, GetMessageField (FieldTagRep a), Show (FieldTagRep 
           Nothing  -> throwIO . IncorrectTagValue fieldId $ show rawValue
       else return $! K1 Nothing
 
-instance (Nat n, FieldTag a, GetMessageField (FieldTagRep a), Show (FieldTagRep a)) => GGetMessageFields (K1 c (Enumeration n a)) where
+instance (FieldTag a, GetMessageField (FieldTagRep a), KnownNat n, Show (FieldTagRep a)) => GGetMessageFields (K1 c (Enumeration n a)) where
   gGetMessageFields msg = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     isSet <- isFieldSet msg (fromIntegral fieldId)
     unless isSet . throwIO . FieldNotFound fieldId $ "Missing required field: " ++ show fieldId
     rawValue <- getMessageField msg fieldId
@@ -113,24 +114,24 @@ instance (Nat n, FieldTag a, GetMessageField (FieldTagRep a), Show (FieldTagRep 
       Just val -> return $! K1 . Enumeration $ val
       Nothing  -> throwIO . IncorrectTagValue fieldId $ show rawValue
 
-instance (Nat n, Generic a, GGetMessageField (Rep a)) => GGetMessageFields (K1 c (Maybe (Field n a))) where
+instance (Generic a, GGetMessageField (Rep a), KnownNat n) => GGetMessageFields (K1 c (Maybe (Field n a))) where
   gGetMessageFields msg = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     isSet <- isFieldSet msg (fromIntegral fieldId)
     if isSet
       then K1 . Just . Field . to <$> gGetMessageField msg fieldId
       else return $! K1 Nothing
 
-instance (Nat n, Generic a, GGetMessageField (Rep a)) => GGetMessageFields (K1 c (Field n a)) where
+instance (Generic a, GGetMessageField (Rep a), KnownNat n) => GGetMessageFields (K1 c (Field n a)) where
   gGetMessageFields msg = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = fromIntegral $ natVal (Proxy :: Proxy n)
     isSet <- isFieldSet msg (fromIntegral fieldId)
     unless isSet . throwIO . FieldNotFound fieldId $ "Missing required field: " ++ show fieldId
     K1 . Field . to <$> gGetMessageField msg fieldId
 
-instance (Nat n, Generic a, GGetMessageFields (Rep a)) => GGetMessageFields (K1 c (Group n a)) where
+instance (Generic a, GGetMessageFields (Rep a), KnownNat n) => GGetMessageFields (K1 c (Group n a)) where
   gGetMessageFields _ = do
-    let fieldId = toInt (undefined :: n)
+    let fieldId = natVal (Proxy :: Proxy n)
     putStrLn $ "TODO: properly implement groups: " ++ show fieldId
     -- forM_ xs $ gGetMessageFields msg . from
     return $! K1 (Group [])

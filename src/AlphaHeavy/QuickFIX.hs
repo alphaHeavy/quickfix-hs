@@ -53,7 +53,7 @@ createAcceptor
   => FilePath
   -> String
   -> String
-  -> m (QuickFIX, GSource m a, GInfSink a m)
+  -> m (QuickFIX, Producer m a, Consumer a m ())
 createAcceptor = createQuickFIXEngine runAcceptor
 
 createInitiator
@@ -61,7 +61,7 @@ createInitiator
   => FilePath
   -> String
   -> String
-  -> m (QuickFIX, GSource m a, GInfSink a m)
+  -> m (QuickFIX, Producer m a, Consumer a m ())
 createInitiator = createQuickFIXEngine runApplication
 
 createQuickFIXEngine
@@ -70,7 +70,7 @@ createQuickFIXEngine
   -> FilePath
   -> String
   -> String
-  -> m (QuickFIX, GSource m a, GInfSink a m)
+  -> m (QuickFIX, Producer m a, Consumer a m ())
 createQuickFIXEngine createFunction configPath sender target = do
   app@ConduitApp{..} <- liftIO . atomically $ do
     recv <- newEmptyTMVar
@@ -123,7 +123,7 @@ createQuickFIXEngine createFunction configPath sender target = do
 sourceQuickFIX
   :: (Generic a, GRecvMessage (Rep a), MonadIO m)
   => ConduitApp
-  -> GSource m a
+  -> Producer m a
 sourceQuickFIX ConduitApp{conduitAppRecv, conduitAppStatus} = step where
   step = do
     mval <- liftIO . atomically $ do
@@ -155,7 +155,7 @@ sinkQuickFIX
   -> TVar (Map k SessionState)
   -> String
   -> String
-  -> GInfSink a m
+  -> Consumer a m ()
 sinkQuickFIX releaseKey sessions sender target = do
   liftIO . atomically $ do
     sv <- readTVar sessions
