@@ -280,8 +280,8 @@ camel [] = []
 maybeFIXTyCon :: Field -> Type
 maybeFIXTyCon fty = (strongFIXTyCon fty)
 
-unbangedMaybeFIXTyCon :: Field -> BangType
-unbangedMaybeFIXTyCon = UnBangedTy . maybeFIXTyCon
+{-unbangedMaybeFIXTyCon :: Field -> BangType
+unbangedMaybeFIXTyCon = BangedTy . maybeFIXTyCon-}
 
 fieldType' :: (Field, Required) -> (Name, Type)
 fieldType' field = case field of
@@ -303,9 +303,9 @@ recordDecl :: Message -> ConDecl
 recordDecl (Message _ name _ fields) = ConDecl ident args
   where ident        = Ident name
         args         = map x fields
-        grp fty      = UnBangedTy $ strongFIXTyCon fty
-        ty True fty  = UnBangedTy $ strongFIXTyCon fty
-        ty False fty = unbangedMaybeFIXTyCon fty
+        grp fty      = strongFIXTyCon fty
+        ty True fty  = strongFIXTyCon fty
+        ty False fty = maybeFIXTyCon fty
         x (g@Group{}, _)   = grp g
         x (f@Field{}, reqd)= ty reqd f
 
@@ -371,8 +371,8 @@ groupDecl :: Field -> ConDecl
 groupDecl (Group _ name _ fields) = ConDecl ident args
   where ident = Ident name
         args         = map x fields
-        ty           = UnBangedTy . strongFIXTyCon
-        grp          = UnBangedTy . weakFIXTyCon
+        ty           = BangedTy . strongFIXTyCon
+        grp          = BangedTy . weakFIXTyCon
         groupPrefix fieldName = camel name ++ fieldName
         x (f@Field{fieldName}, _) = ty f
         x (Group{fieldName}, _) = grp $ FIXGroup fieldName
@@ -459,7 +459,7 @@ generateNewTypeDecl field = case (fieldType field) of
                               FIXQuantity -> []
                               _ -> [newTypeDecl]
   where newTypeDecl = DataDecl srcLoc NewType context name tyVarBind decls derived
-        decls     = [QualConDecl srcLoc tyVarBind context (ConDecl name [UnBangedTy baseTyCon])]
+        decls     = [QualConDecl srcLoc tyVarBind context (ConDecl name [BangedTy baseTyCon])]
         name      = Ident $ fieldName field
         context   = []
         tyVarBind = []

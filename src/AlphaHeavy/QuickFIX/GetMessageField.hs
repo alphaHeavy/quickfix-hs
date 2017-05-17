@@ -11,8 +11,6 @@ import Data.Int
 import Data.Time
 import GHC.Generics
 
-import System.Locale (defaultTimeLocale)
-
 import AlphaHeavy.FIX as FIX
 import AlphaHeavy.QuickFIX.Foreign
 import AlphaHeavy.QuickFIX.Types

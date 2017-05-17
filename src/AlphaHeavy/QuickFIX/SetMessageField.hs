@@ -6,8 +6,7 @@ module AlphaHeavy.QuickFIX.SetMessageField where
 import Data.ByteString (ByteString)
 import Data.Int
 import GHC.Generics
-import Data.Time (UTCTime, formatTime)
-import System.Locale (defaultTimeLocale)
+import Data.Time (UTCTime, defaultTimeLocale, formatTime)
 
 import AlphaHeavy.FIX as FIX
 import AlphaHeavy.QuickFIX.Foreign
