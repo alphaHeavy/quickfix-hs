@@ -56,7 +56,7 @@ instance GetMessageField ByteString where
 instance GetMessageField Data.Time.UTCTime where
   getMessageField msg fid = do
     txt <- getMessageField msg fid
-    case parseTime defaultTimeLocale "%Y%m%d-%H:%M:%S" txt of
+    case parseTimeM True defaultTimeLocale "%Y%m%d-%H:%M:%S" txt of
       Just val -> return $! val
       Nothing  -> throwIO . IncorrectTagValue fid $ txt
 
