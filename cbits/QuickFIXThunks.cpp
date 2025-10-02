@@ -277,5 +277,5 @@ char* sessionDisconnect(const FIX::SessionID& sid)
 extern "C"
 char* sessionString(const FIX::SessionID& sid)
 {
-    strdup(sid.toStringFrozen().c_str());
+    return strdup(sid.toStringFrozen().c_str());
 }

@@ -5,6 +5,7 @@
 
 # GHC build goo
 dist/
+dist-newstyle/
 docs/
 out/
 *.dump-*

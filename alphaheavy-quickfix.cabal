@@ -34,7 +34,7 @@ Library
 
   HS-Source-Dirs:    src
 
-  GHC-Options:       -Wall
+  GHC-Options:       -Wall -optcxx-std=c++11
   CC-Options:        -O2 -ggdb
 
   C-Sources:         cbits/QuickFIXThunks.cpp
